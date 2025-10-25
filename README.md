@@ -16,11 +16,11 @@ Criar pedido/carrinho, fechar compra, faturar e gerar remessa.
 # 📋 Checklist de Entregas
 
 1. [x] Levantamento de **Requisitos (RF, RNF, RN)**
-2. [ ] **Modelo Entidade-Relacionamento (DER)** no BRModelo
-3. [ ] **Mapeamento Relacional (DDL)** — Criação de tabelas e constraints
-4. [ ] **Criar o esquema (DDL PostgreSQL)**
-5. [ ] **População de Dados (DML)** — Inserts coerentes e funcionais
-6. [ ] **VIEW obrigatória** + SELECT de exemplo
+2. [x] **Modelo Entidade-Relacionamento (DER)** no BRModelo
+3. [x] **Mapeamento Relacional (DDL)** — Criação de tabelas e constraints
+4. [x] **Criar o esquema (DDL PostgreSQL)**
+5. [x] **População de Dados (DML)** — Inserts coerentes e funcionais
+6. [x] **VIEW obrigatória** + SELECT de exemplo
 
 # 📄 Licença
 
