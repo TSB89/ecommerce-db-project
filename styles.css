@@ -93,9 +93,9 @@ body {
 
 /* === BOTÕES DE SEÇÃO === */
 .toggle-btn {
-    background: linear-gradient(135deg, var(--cor-primaria-clara) 0%, var(--cor-primaria-escura) 100%);
+    background: linear-gradient(135deg, #5a5a5a 0%, #2e2e2e 100%);
     color: white;
-    border: none;
+    border: 1px solid #444;
     padding: 10px 15px;
     border-radius: 10px;
     cursor: pointer;
@@ -103,11 +103,25 @@ body {
     font-size: 0.9rem;
     transition: all 0.3s ease;
     margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .toggle-btn:hover {
-    background: linear-gradient(135deg, var(--cor-secundaria-clara) 0%, var(--cor-secundaria-escura) 100%);
+    background: linear-gradient(135deg, #707070 0%, #3d3d3d 100%);
 }
+
+/* Botão ativo com cor de destaque */
+.toggle-btn.ativo {
+    background: linear-gradient(135deg, #666 0%, #000 100%);
+    border-color: #000;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-btn.ativo:hover {
+    background: linear-gradient(135deg, #808080 0%, #1a1a1a 100%);
+}
+
 
 /* === CONTEÚDO E ANIMAÇÕES === */
 .db-conteudo {
@@ -177,7 +191,6 @@ body {
 /* Cabeçalho da tabela */
 .db-table th {
     background-color: var(--cor-secundaria-clara);
-    /* usa cor do tema */
     color: #333;
     font-weight: bold;
 }
@@ -227,7 +240,7 @@ body {
 .footer {
     text-align: center;
     color: white;
-    margin-top: 60px;
+    margin-top: -20px;
     padding: 30px;
     font-size: 1rem;
     font-weight: 500;
@@ -236,46 +249,38 @@ body {
     border-radius: 15px;
 }
 
-/* === Alinhamento dos textos (justificado) === */
+/* === Alinhamento dos textos === */
 .db-exemplo>p,
 .db-conteudo p {
     text-align: justify;
     text-indent: 25px;
-    /* recuo da 1ª linha */
     margin-bottom: 15px;
 }
 
-/* === Linha de botões (centralizados e com quebra elegante) === */
+/* === Linha de botões === */
 .db-botoes {
     display: flex;
     gap: 30px;
     justify-content: center;
-    /* centraliza os botões */
     flex-wrap: wrap;
-    /* permite quebrar pra próxima linha */
     margin-bottom: -10px;
 }
 
 .db-exemplo .toggle-btn {
     min-width: 180px;
-    /* mantém largura consistente */
 }
 
 /* === Cores do link no rodapé === */
 .footer a,
 .footer a:visited {
     color: rgba(255, 255, 255, 0.85);
-    /* branco suave */
     text-decoration: underline dotted;
-    /* sublinhado discreto */
 }
 
 .footer a:hover,
 .footer a:focus {
     color: #ffffff;
-    /* mais claro ao passar o mouse */
     text-decoration: underline;
-    /* feedback de interação */
 }
 
 .footer a,
@@ -290,14 +295,14 @@ body {
 
 /* === Cores do link H3 === */
 
-h3 a {
+h4 a {
     color: var(--cor-primaria-escura);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
-h3 a:hover {
+h4 a:hover {
     color: var(--cor-secundaria-escura);
     text-decoration: underline;
 }

@@ -29,9 +29,9 @@
                 processamento de <b>pagamentos</b>, geração de <b>remessas</b> e <b>auditoria de pedidos</b>.
             </p>
 
-            <h3 style="text-align: center;">-
-                <a href="https://pg-sql.com/" target="_blank">Site para testar o SQL</a> -
-            </h3>
+            <h4 style="text-align: center;">
+                <a href="https://pg-sql.com/" target="_blank">Clique aqui</a> para testar o SQL Online.
+            </h4>
 
             <br>
             <!-- BOTÕES LADO A LADO -->
@@ -39,9 +39,9 @@
                 <button class="toggle-btn" onclick="toggleSecao('requisitos', this)">📊 Levantamento de
                     Requisitos</button>
                 <button class="toggle-btn" onclick="toggleSecao('modelagem', this)">🧩 Modelagem ER</button>
-                <button class="toggle-btn" onclick="toggleSecao('mapeamento', this)">🧮 Mapeamento Relacional</button>
-                <button class="toggle-btn" onclick="toggleSecao('ddl', this)">🧱 Esquema DDL</button>
-                <button class="toggle-btn" onclick="toggleSecao('populacao', this)">📦 População de Dados</button>
+                <button class="toggle-btn" onclick="toggleSecao('mapeamento', this)">🧮 Mapeamento Relacional </button>
+                <button class="toggle-btn" onclick="toggleSecao('ddl', this)">🧱 Esquema (DDL)</button>
+                <button class="toggle-btn" onclick="toggleSecao('populacao', this)">📦 População de Dados (DML)</button>
                 <button class="toggle-btn" onclick="toggleSecao('view', this)">🔍 View e SELECT</button>
             </div>
 
@@ -590,7 +590,7 @@ VALUES
 (1, 'Correios', 'BR123456SP', '2025-10-02 08:00:00', '2025-10-05', 'em_rota'),
 (3, 'Transportadora X', 'TR654321MG', '2025-10-03 10:00:00', '2025-10-07', 'em_rota');
 
-- Cria auditoria de 4 pedidos
+-- Cria auditoria de 4 pedidos
 
 INSERT INTO auditoria_pedido (id_pedido, campo_alterado, valor_anterior, valor_novo, usuario_responsavel)
 VALUES
