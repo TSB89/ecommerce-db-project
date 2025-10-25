@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelagem de Banco de Dados</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📚 Modelagem de Banco de Dados</h1>
+            <p class="subtitle">E-commerce - Loja simples</p>
+        </header>
+
+        <!-- 🔽 VISUALIZAÇÃO E MODELAGEM DO BANCO DE DADOS -->
+        <section class="db-exemplo">
+
+            <h2>Objetivo do Projeto</h2>
+            <p></p>
+            <p>
+                O presente projeto tem como objetivo modelar e implementar um banco de dados relacional para um
+                sistema de e-commerce simplificado.
+                O sistema contempla funcionalidades básicas como cadastro de <b>clientes</b> e <b>produtos</b>,
+                gerenciamento de
+                <b>estoque</b>, criação e fechamento de <b>pedidos</b>,
+                processamento de <b>pagamentos</b>, geração de <b>remessas</b> e <b>auditoria de pedidos</b>.
+            </p>
+
+            <h3 style="text-align: center;">-
+                <a href="https://pg-sql.com/" target="_blank">Site para testar o SQL</a> -
+            </h3>
+
+            <br>
+            <!-- BOTÕES LADO A LADO -->
+            <div class="db-botoes">
+                <button class="toggle-btn" onclick="toggleSecao('requisitos', this)">📊 Levantamento de
+                    Requisitos</button>
+                <button class="toggle-btn" onclick="toggleSecao('modelagem', this)">🧩 Modelagem ER</button>
+                <button class="toggle-btn" onclick="toggleSecao('mapeamento', this)">🧮 Mapeamento Relacional</button>
+                <button class="toggle-btn" onclick="toggleSecao('ddl', this)">🧱 Esquema DDL</button>
+                <button class="toggle-btn" onclick="toggleSecao('populacao', this)">📦 População de Dados</button>
+                <button class="toggle-btn" onclick="toggleSecao('view', this)">🔍 View e SELECT</button>
+            </div>
+
+            <!-- CONTEÚDO: Levantamento de Requisitos -->
+            <div id="requisitos" class="db-conteudo">
+                <p></p>
+                <h3>1.1 Requisitos Funcionais</h3>
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RF-01</td>
+                            <td>Cadastro de cliente</td>
+                            <td>Permitir criar/editar/consultar clientes com nome, e-mail único, CPF/CNPJ opcional,
+                                telefone e dados de cadastro.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-02</td>
+                            <td>Gerenciar endereços</td>
+                            <td>Associar múltiplos endereços a um cliente (endereço para cobrança e para entrega), com
+                                CEP, rua, número, cidade e estado.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-03</td>
+                            <td>Catálogo de produtos</td>
+                            <td>Exibir produtos com código, nome, descrição curta, preço unitário, unidade de medida e
+                                indicador de ativo/inativo.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-04</td>
+                            <td>Consulta de estoque</td>
+                            <td>Mostrar disponibilidade atual por produto (quantidade em estoque) e indicar “esgotado”
+                                quando quantidade ≤ 0.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-05</td>
+                            <td>Carrinho</td>
+                            <td>Criar um pedido em estado carrinho onde o cliente adiciona itens (produto, quantidade),
+                                com cálculo parcial de subtotal.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-06</td>
+                            <td>Checkout</td>
+                            <td>Processar o fechamento do pedido: selecionar endereço de entrega, método de frete, forma
+                                de pagamento, cálculo de impostos/frete e gerar pedido em estado fechado.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-07</td>
+                            <td>Pagamento e faturamento</td>
+                            <td>Registrar tentativas de pagamento, marcar pagamento como aprovado ou rejeitado; ao
+                                pagamento aprovado, gerar fatura/registro fiscal e marcar pedido como faturado.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-08</td>
+                            <td>Expedição</td>
+                            <td>Criar remessa/roteiro de envio com itens do pedido faturado, atribuir
+                                transportadora/serviço de frete e registrar código de rastreamento; pedido passa para
+                                estado enviado quando remessa for despachada.</td>
+                        </tr>
+                        <tr>
+                            <td>RF-09</td>
+                            <td>Status do pedido</td>
+                            <td>Registrar historicamente cada mudança de status do pedido (quem, quando, motivo) na
+                                entidade AuditoriaPedido.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>1.2 Requisitos Não Funcionais</h3>
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RNF-01</td>
+                            <td>Segurança básica</td>
+                            <td>Sistema exige autenticação para ações de cliente e controle de privilégios
+                                administrativos.</td>
+                        </tr>
+                        <tr>
+                            <td>RNF-02</td>
+                            <td>Performance básica</td>
+                            <td>Listagem de produtos e consulta de estoque devem responder em ≤ 500 ms para cargas
+                                normais.</td>
+                        </tr>
+                        <tr>
+                            <td>RNF-03</td>
+                            <td>Disponibilidade e tolerância</td>
+                            <td>Banco e API devem suportar operação contínua no horário comercial, com backups
+                                regulares.</td>
+                        </tr>
+                        <tr>
+                            <td>RNF-04</td>
+                            <td>Backups e recuperação</td>
+                            <td>Backups automáticos diários com retenção mínima configurável e restauração documentada.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RNF-05</td>
+                            <td>Consistência de estoque</td>
+                            <td>Atualização de estoque deve ser transacional e operações críticas usar
+                                locks/transactions apropriados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>1.3 Regras de Negócio</h3>
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RN-01</td>
+                            <td>Unicidade do e-mail do cliente</td>
+                            <td>O e-mail do cliente é único no sistema.</td>
+                        </tr>
+                        <tr>
+                            <td>RN-02</td>
+                            <td>Estados válidos de pedido</td>
+                            <td>Fluxo: CARRINHO → FECHADO → PAGO/FATURADO → REMESSA_GERADA → ENVIADO →
+                                ENTREGUE/CANCELADO.</td>
+                        </tr>
+                        <tr>
+                            <td>RN-03</td>
+                            <td>Política de estoque</td>
+                            <td>Não pode faturar sem estoque reservado suficiente; cancelamento libera reserva.</td>
+                        </tr>
+                        <tr>
+                            <td>RN-04</td>
+                            <td>Pagamento</td>
+                            <td>Pedido só fica confirmado quando pagamento = aprovado.</td>
+                        </tr>
+                        <tr>
+                            <td>RN-05</td>
+                            <td>Remessa</td>
+                            <td>Só é criada após faturamento.</td>
+                        </tr>
+                        <tr>
+                            <td>RN-06</td>
+                            <td>Auditoria obrigatória</td>
+                            <td>Qualquer mudança de status deve gerar registro em auditoria_pedido com usuário
+                                responsável.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="modelagem" class="db-conteudo">
+
+                <div class="er-container">
+                    <a href="imagens/modelo-er.jpg" target="_blank" title="Clique para abrir em tamanho original">
+                        <img src="imagens/modelo-er.jpg" alt="Diagrama Entidade-Relacionamento" class="er-imagem">
+                    </a>
+                </div>
+            </div>
+
+            <div id="mapeamento" class="db-conteudo">
+
+                <section id="mapeamento-relacional">
+
+                    <!-- CARD 1 -->
+                    <div class="card">
+                        <h3>CLIENTE</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_cliente</p>
+                        <p><strong>FK:</strong> —</p>
+                        <p><strong>Atributos:</strong> nome, email, senha_hash, telefone, cpf, data_cadastro</p>
+                        <p><strong>Relacionamentos:</strong> 1:N ENDERECO, 1:N PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            email deve ser único; cpf deve ser único.
+                        </p>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="card">
+                        <h3>ENDERECO</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_endereco</p>
+                        <p><strong>FK:</strong> id_cliente → CLIENTE(id_cliente)</p>
+                        <p><strong>Atributos:</strong> logradouro, numero, complemento, bairro, cidade, uf, cep, tipo
+                            (entrega | cobranca), principal (boolean)</p>
+                        <p><strong>Relacionamentos:</strong> N:1 CLIENTE, 1:N PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            um cliente pode ter vários endereços; cada pedido possui um endereço de entrega e um de
+                            cobrança.
+                        </p>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="card">
+                        <h3>PRODUTO</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_produto</p>
+                        <p><strong>FK:</strong> —</p>
+                        <p><strong>Atributos:</strong> sku, nome, descricao, preco_unitario, peso, categoria, ativo</p>
+                        <p><strong>Relacionamentos:</strong> 1:1 ESTOQUE, N:N PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            sku é único; ativo indica se o produto está disponível para venda.
+                        </p>
+                    </div>
+
+                    <!-- CARD 4 -->
+                    <div class="card">
+                        <h3>ESTOQUE</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_estoque</p>
+                        <p><strong>FK:</strong> id_produto → PRODUTO(id_produto)</p>
+                        <p><strong>Atributos:</strong> quantidade_atual, quantidade_reservada, data_ultima_atualizacao
+                        </p>
+                        <p><strong>Relacionamentos:</strong> 1:1 PRODUTO</p>
+                        <p><strong>Regras:</strong>
+                            cada produto possui apenas um registro de estoque.
+                        </p>
+                    </div>
+
+                    <!-- CARD 5 -->
+                    <div class="card">
+                        <h3>PEDIDO</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_pedido</p>
+                        <p><strong>FK:</strong>
+                            id_cliente → CLIENTE(id_cliente);
+                            id_endereco_entrega → ENDERECO(id_endereco);
+                            id_endereco_cobranca → ENDERECO(id_endereco)
+                        </p>
+                        <p><strong>Atributos:</strong> data_criacao, valor_subtotal, valor_frete, valor_total, status
+                            (carrinho, confirmado, faturado, em_transporte, entregue, cancelado)</p>
+                        <p><strong>Relacionamentos:</strong> N:1 CLIENTE, 1:N ITEM_PEDIDO, 1:1 PAGAMENTO, 1:1 REMESSA,
+                            1:N AUDITORIA_PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            cada pedido pertence a um cliente; deve ter pelo menos um item; pagamento e remessa são
+                            opcionais até suas respectivas fases.
+                        </p>
+                    </div>
+
+                    <!-- CARD 6 -->
+                    <div class="card">
+                        <h3>ITEM_PEDIDO</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> (id_pedido, id_produto)</p>
+                        <p><strong>FK:</strong> id_pedido → PEDIDO(id_pedido); id_produto → PRODUTO(id_produto)</p>
+                        <p><strong>Atributos:</strong> quantidade, preco_unitario, desconto_item</p>
+                        <p><strong>Relacionamentos:</strong> N:1 PEDIDO, N:1 PRODUTO</p>
+                        <p><strong>Regras:</strong>
+                            um mesmo produto não pode aparecer duas vezes no mesmo pedido; quantidade deve ser maior que
+                            zero.
+                        </p>
+                    </div>
+
+                    <!-- CARD 7 -->
+                    <div class="card">
+                        <h3>PAGAMENTO</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_pagamento</p>
+                        <p><strong>FK:</strong> id_pedido → PEDIDO(id_pedido)</p>
+                        <p><strong>Atributos:</strong> metodo (cartao, pix, boleto), valor_pago, data_pagamento, status
+                            (pendente, aprovado, negado, estornado), cod_transacao</p>
+                        <p><strong>Relacionamentos:</strong> 1:1 PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            um pedido só pode ser faturado após o pagamento ser aprovado.
+                        </p>
+                    </div>
+
+                    <!-- CARD 8 -->
+                    <div class="card">
+                        <h3>REMESSA</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_remessa</p>
+                        <p><strong>FK:</strong> id_pedido → PEDIDO(id_pedido)</p>
+                        <p><strong>Atributos:</strong> transportadora, codigo_rastreio, data_envio,
+                            data_entrega_prevista, status (preparando, postado, em_rota, entregue, falha_entrega)</p>
+                        <p><strong>Relacionamentos:</strong> 1:1 PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            cada pedido gera uma única remessa após ser faturado; codigo_rastreio deve ser único.
+                        </p>
+                    </div>
+
+                    <!-- CARD 9 -->
+                    <div class="card">
+                        <h3>AUDITORIA_PEDIDO</h3>
+                        <p></p>
+                        <p><strong>PK:</strong> id_auditoria</p>
+                        <p><strong>FK:</strong> id_pedido → PEDIDO(id_pedido)</p>
+                        <p><strong>Atributos:</strong> campo_alterado, valor_anterior, valor_novo, usuario_responsavel,
+                            data_alteracao</p>
+                        <p><strong>Relacionamentos:</strong> N:1 PEDIDO</p>
+                        <p><strong>Regras:</strong>
+                            todo evento relevante de alteração em pedido, pagamento ou remessa deve ser registrado.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <div id="ddl" class="db-conteudo">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+-- 1. CLIENTE
+
+CREATE TABLE cliente (
+    id_cliente           INT GENERATED BY DEFAULT AS IDENTITY,
+    nome                 VARCHAR(100) NOT NULL,
+    email                VARCHAR(100) NOT NULL,
+    senha_hash           VARCHAR(200) NOT NULL,
+    telefone             VARCHAR(20),
+    cpf                  VARCHAR(14) UNIQUE,
+    data_cadastro        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_cliente PRIMARY KEY (id_cliente),
+    CONSTRAINT uq_cliente_email UNIQUE (email)
+);
+
+-- 2. ENDERECO
+
+CREATE TABLE endereco (
+    id_endereco          INT GENERATED BY DEFAULT AS IDENTITY,
+    id_cliente           INT NOT NULL,
+    logradouro           VARCHAR(150) NOT NULL,
+    numero               VARCHAR(10) NOT NULL,
+    complemento          VARCHAR(50),
+    bairro               VARCHAR(80),
+    cidade               VARCHAR(80),
+    uf                   CHAR(2) NOT NULL,
+    cep                  CHAR(9) NOT NULL,
+    tipo                 VARCHAR(20) CHECK (tipo IN ('entrega','cobranca')),
+    principal            BOOLEAN DEFAULT FALSE,
+    CONSTRAINT pk_endereco PRIMARY KEY (id_endereco),
+    CONSTRAINT fk_endereco_cliente FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente)
+        ON DELETE CASCADE
+);
+
+-- 3. PRODUTO
+
+CREATE TABLE produto (
+    id_produto           INT GENERATED BY DEFAULT AS IDENTITY,
+    sku                  VARCHAR(30) NOT NULL,
+    nome                 VARCHAR(120) NOT NULL,
+    descricao            TEXT,
+    preco_unitario       NUMERIC(10,2) NOT NULL CHECK (preco_unitario >= 0),
+    peso                 NUMERIC(8,3),
+    categoria            VARCHAR(60),
+    ativo                BOOLEAN DEFAULT TRUE,
+    CONSTRAINT pk_produto PRIMARY KEY (id_produto),
+    CONSTRAINT uq_produto_sku UNIQUE (sku)
+);
+
+-- 4. ESTOQUE
+
+CREATE TABLE estoque (
+    id_estoque           INT GENERATED BY DEFAULT AS IDENTITY,
+    id_produto           INT NOT NULL UNIQUE,
+    quantidade_atual     INT NOT NULL DEFAULT 0 CHECK (quantidade_atual >= 0),
+    quantidade_reservada INT NOT NULL DEFAULT 0 CHECK (quantidade_reservada >= 0),
+    data_ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_estoque PRIMARY KEY (id_estoque),
+    CONSTRAINT fk_estoque_produto FOREIGN KEY (id_produto)
+        REFERENCES produto (id_produto)
+        ON DELETE CASCADE
+);
+
+-- 5. PEDIDO
+
+CREATE TABLE pedido (
+    id_pedido            INT GENERATED BY DEFAULT AS IDENTITY,
+    id_cliente           INT NOT NULL,
+    id_endereco_entrega  INT,
+    id_endereco_cobranca INT,
+    data_criacao         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valor_subtotal       NUMERIC(10,2) DEFAULT 0,
+    valor_frete          NUMERIC(10,2) DEFAULT 0,
+    valor_total          NUMERIC(10,2) DEFAULT 0,
+    status               VARCHAR(20) DEFAULT 'carrinho'
+        CHECK (status IN ('carrinho','confirmado','faturado','em_transporte','entregue','cancelado')),
+    CONSTRAINT pk_pedido PRIMARY KEY (id_pedido),
+    CONSTRAINT fk_pedido_cliente FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente),
+    CONSTRAINT fk_pedido_endereco_entrega FOREIGN KEY (id_endereco_entrega)
+        REFERENCES endereco (id_endereco),
+    CONSTRAINT fk_pedido_endereco_cobranca FOREIGN KEY (id_endereco_cobranca)
+        REFERENCES endereco (id_endereco)
+);
+
+-- 6. ITEM_PEDIDO
+
+CREATE TABLE item_pedido (
+    id_pedido            INT NOT NULL,
+    id_produto           INT NOT NULL,
+    quantidade           INT NOT NULL CHECK (quantidade > 0),
+    preco_unitario       NUMERIC(10,2) NOT NULL CHECK (preco_unitario >= 0),
+    desconto_item        NUMERIC(10,2) DEFAULT 0 CHECK (desconto_item >= 0),
+    CONSTRAINT pk_item_pedido PRIMARY KEY (id_pedido, id_produto),
+    CONSTRAINT fk_item_pedido_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_item_pedido_produto FOREIGN KEY (id_produto)
+        REFERENCES produto (id_produto)
+);
+
+-- 7. PAGAMENTO
+
+CREATE TABLE pagamento (
+    id_pagamento         INT GENERATED BY DEFAULT AS IDENTITY,
+    id_pedido            INT NOT NULL UNIQUE,
+    metodo               VARCHAR(20) NOT NULL CHECK (metodo IN ('cartao','pix','boleto')),
+    valor_pago           NUMERIC(10,2) NOT NULL CHECK (valor_pago >= 0),
+    data_pagamento       TIMESTAMP,
+    status               VARCHAR(20) DEFAULT 'pendente'
+        CHECK (status IN ('pendente','aprovado','negado','estornado')),
+    cod_transacao        VARCHAR(50),
+    CONSTRAINT pk_pagamento PRIMARY KEY (id_pagamento),
+    CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE CASCADE
+);
+
+-- 8. REMESSA
+
+CREATE TABLE remessa (
+    id_remessa           INT GENERATED BY DEFAULT AS IDENTITY,
+    id_pedido            INT NOT NULL UNIQUE,
+    transportadora       VARCHAR(80) NOT NULL,
+    codigo_rastreio      VARCHAR(50) UNIQUE,
+    data_envio           TIMESTAMP,
+    data_entrega_prevista DATE,
+    status               VARCHAR(20) DEFAULT 'preparando'
+        CHECK (status IN ('preparando','postado','em_rota','entregue','falha_entrega')),
+    CONSTRAINT pk_remessa PRIMARY KEY (id_remessa),
+    CONSTRAINT fk_remessa_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE CASCADE
+);
+
+-- 9. AUDITORIA_PEDIDO
+
+CREATE TABLE auditoria_pedido (
+    id_auditoria         INT GENERATED BY DEFAULT AS IDENTITY,
+    id_pedido            INT NOT NULL,
+    campo_alterado       VARCHAR(100),
+    valor_anterior       VARCHAR(200),
+    valor_novo           VARCHAR(200),
+    usuario_responsavel  VARCHAR(100),
+    data_alteracao       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_auditoria PRIMARY KEY (id_auditoria),
+    CONSTRAINT fk_auditoria_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE CASCADE
+);
+             </code>
+                </div>
+            </div>
+
+            <div id="populacao" class="db-conteudo">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+-- Adiciona 3 clientes 
+
+INSERT INTO cliente (nome, email, senha_hash, telefone, cpf)
+VALUES
+
+('Thiago', 'thiago.bezerra@email.com', 'hash123', '11999990001', '123.456.789-00'),
+('Pedro', 'pedro.lima@email.com', 'hash456', '21988880002', '987.654.321-00'),
+('Lucas', 'lucas.tertoliano@email.com', 'hash789', '31977770003', '555.666.777-00');
+
+-- Adiciona um endereço de entrega e um de cobrança para cada cliente
+
+INSERT INTO endereco (id_cliente, logradouro, numero, bairro, cidade, uf, cep, tipo, principal)
+VALUES
+
+(1, 'Rua das Flores', '100', 'Centro', 'São Paulo', 'SP', '01000-000', 'entrega', TRUE),
+(1, 'Rua das Flores', '100', 'Centro', 'São Paulo', 'SP', '01000-000', 'cobranca', TRUE),
+(2, 'Av. Brasil', '500', 'Copacabana', 'Rio de Janeiro', 'RJ', '22000-000', 'entrega', TRUE),
+(2, 'Av. Brasil', '500', 'Copacabana', 'Rio de Janeiro', 'RJ', '22000-000', 'cobranca', TRUE),
+(3, 'Rua Minas Gerais', '250', 'Savassi', 'Belo Horizonte', 'MG', '30100-000', 'entrega', TRUE),
+(3, 'Rua Minas Gerais', '250', 'Savassi', 'Belo Horizonte', 'MG', '30100-000', 'cobranca', TRUE);
+
+-- Adiciona 4 produtos
+
+INSERT INTO produto (sku, nome, descricao, preco_unitario, peso, categoria)
+VALUES
+
+('P001', 'Camiseta Básica', 'Camiseta de algodão unissex', 59.90, 0.3, 'Vestuário'),
+('P002', 'Tênis Running', 'Tênis leve para corrida', 249.90, 1.2, 'Calçados'),
+('P003', 'Boné Casual', 'Boné ajustável com logo bordado', 79.90, 0.2, 'Acessórios'),
+('P004', 'Mochila Esportiva', 'Mochila 25L resistente à água', 199.90, 0.9, 'Acessórios');
+
+-- Adiciona estoque aos 4 produtos
+
+INSERT INTO estoque (id_produto, quantidade_atual, quantidade_reservada)
+VALUES
+
+(1, 10, 0),
+(2, 15, 0),
+(3, 20, 0),
+(4, 25, 0);
+
+-- Cria 3 pedidos
+
+INSERT INTO pedido (id_cliente, id_endereco_entrega, id_endereco_cobranca, valor_subtotal, valor_frete, valor_total, status)
+VALUES
+
+(1, 1, 2, 309.80, 25.00, 334.80, 'faturado'),
+(2, 3, 4, 249.90, 20.00, 269.90, 'confirmado'),
+(3, 5, 6, 59.90, 15.00, 74.90, 'em_transporte');
+
+-- Preenche 4 pedidos com itens da Loja
+
+INSERT INTO item_pedido (id_pedido, id_produto, quantidade, preco_unitario, desconto_item)
+VALUES
+
+(1, 1, 2, 59.90, 0),
+(1, 3, 1, 79.90, 0),
+(2, 2, 1, 249.90, 0),
+(3, 1, 1, 59.90, 0);
+
+-- Simula 3 pagamentos
+
+INSERT INTO pagamento (id_pedido, metodo, valor_pago, data_pagamento, status, cod_transacao)
+VALUES
+
+(1, 'cartao', 334.80, '2025-10-01 14:00:00', 'aprovado', 'TX001'),
+(2, 'pix', 269.90, '2025-10-02 09:30:00', 'pendente', 'TX002'),
+(3, 'boleto', 74.90, '2025-10-03 11:45:00', 'aprovado', 'TX003');
+
+-- Simula 2 entregas que tiveram o pagamento aprovado
+
+INSERT INTO remessa (id_pedido, transportadora, codigo_rastreio, data_envio, data_entrega_prevista, status)
+VALUES
+
+(1, 'Correios', 'BR123456SP', '2025-10-02 08:00:00', '2025-10-05', 'em_rota'),
+(3, 'Transportadora X', 'TR654321MG', '2025-10-03 10:00:00', '2025-10-07', 'em_rota');
+
+- Cria auditoria de 4 pedidos
+
+INSERT INTO auditoria_pedido (id_pedido, campo_alterado, valor_anterior, valor_novo, usuario_responsavel)
+VALUES
+
+(1, 'status', 'confirmado', 'faturado', 'admin'),
+(1, 'status', 'faturado', 'em_transporte', 'sistema'),
+(2, 'status', 'carrinho', 'confirmado', 'cliente'),
+(3, 'status', 'faturado', 'em_transporte', 'sistema');
+</code>
+                </div>
+            </div>
+
+            <div id="view" class="db-conteudo">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+CREATE VIEW vw_pedidos_resumidos AS
+SELECT
+    p.id_pedido,
+    c.nome AS cliente,
+    c.email,
+    p.data_criacao,
+    p.status AS status_pedido,
+    p.valor_total,
+    pg.metodo AS metodo_pagamento,
+    pg.status AS status_pagamento,
+    r.transportadora,
+    r.codigo_rastreio,
+    r.status AS status_remessa
+FROM pedido p
+JOIN cliente c ON p.id_cliente = c.id_cliente
+LEFT JOIN pagamento pg ON p.id_pedido = pg.id_pedido
+LEFT JOIN remessa r ON p.id_pedido = r.id_pedido;
+                    </code>
+
+                </div>
+
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+-- Listar pedidos com situação geral consolidada
+SELECT 
+    id_pedido,
+    cliente,
+    status_pedido,
+    metodo_pagamento,
+    status_pagamento,
+    transportadora,
+    status_remessa,
+    valor_total
+FROM vw_pedidos_resumidos
+ORDER BY id_pedido;
+    </code>
+                </div>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+-- Listar pedidos em transporte
+SELECT * FROM vw_pedidos_resumidos
+WHERE status_pedido = 'em_transporte';
+    </code>
+                </div>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+-- Listar pedidos com pagamento pendente
+SELECT * FROM vw_pedidos_resumidos
+WHERE status_pagamento = 'pendente';
+    </code>
+                </div>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <p>Modelagem de Banco de Dados - <a href="https://github.com/TSB89/ecommerce-db-project"
+                    target="_blank">Repositório da página no GitHub.</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

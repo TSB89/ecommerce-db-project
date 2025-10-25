@@ -1,0 +1,327 @@
+/* === VARIÁVEIS DE COR === */
+:root {
+    --cor-primaria-clara: #b0b0b0;
+    /* Cinza claro */
+    --cor-primaria-escura: #3a3a3a;
+    /* Cinza escuro */
+    --cor-secundaria-clara: #d6d6d6;
+    /* Destaques */
+    --cor-secundaria-escura: #1e1e1e;
+    /* Fundo escuro */
+}
+
+
+/* === REGRAS GERAIS === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--cor-primaria-clara) 0%, var(--cor-primaria-escura) 100%);
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* === CABEÇALHO === */
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+    padding: 20px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* === BLOCOS DE CÓDIGO === */
+.code-block {
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    overflow-x: auto;
+    position: relative;
+}
+
+.code-block code {
+    color: #f8e1e1;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre;
+    display: block;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--cor-primaria-clara);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: var(--cor-primaria-escura);
+}
+
+/* === BOTÕES DE SEÇÃO === */
+.toggle-btn {
+    background: linear-gradient(135deg, var(--cor-primaria-clara) 0%, var(--cor-primaria-escura) 100%);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.toggle-btn:hover {
+    background: linear-gradient(135deg, var(--cor-secundaria-clara) 0%, var(--cor-secundaria-escura) 100%);
+}
+
+/* === CONTEÚDO E ANIMAÇÕES === */
+.db-conteudo {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.db-conteudo.ativo {
+    opacity: 1;
+    max-height: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* === BOTÃO ATIVO === */
+.toggle-btn.ativo {
+    background: linear-gradient(135deg, var(--cor-secundaria-clara) 0%, var(--cor-secundaria-escura) 100%);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-btn.ativo:hover {
+    background: linear-gradient(135deg, var(--cor-primaria-clara) 0%, var(--cor-primaria-escura) 100%);
+}
+
+/* === SEÇÃO PRINCIPAL === */
+.db-exemplo {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.db-exemplo h2 {
+    color: var(--cor-primaria-escura);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.db-exemplo p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* === TABELAS === */
+.db-table {
+    margin: 20px auto;
+    width: 90%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.db-table th,
+.db-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Cabeçalho da tabela */
+.db-table th {
+    background-color: var(--cor-secundaria-clara);
+    /* usa cor do tema */
+    color: #333;
+    font-weight: bold;
+}
+
+/* Linhas alternadas */
+.db-table tr:nth-child(even) {
+    background: var(--cor-primaria-clara);
+    color: #222;
+}
+
+/* Efeito hover */
+.db-table tr:hover {
+    background: var(--cor-secundaria-clara);
+    color: black;
+}
+
+
+/* === MAPEAMENTO RELACIONAL === */
+#mapeamento-relacional {
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--cor-primaria-escura);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.card strong {
+    color: #222;
+}
+
+/* === FOOTER === */
+.footer {
+    text-align: center;
+    color: white;
+    margin-top: 60px;
+    padding: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+}
+
+/* === Alinhamento dos textos (justificado) === */
+.db-exemplo>p,
+.db-conteudo p {
+    text-align: justify;
+    text-indent: 25px;
+    /* recuo da 1ª linha */
+    margin-bottom: 15px;
+}
+
+/* === Linha de botões (centralizados e com quebra elegante) === */
+.db-botoes {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    /* centraliza os botões */
+    flex-wrap: wrap;
+    /* permite quebrar pra próxima linha */
+    margin-bottom: -10px;
+}
+
+.db-exemplo .toggle-btn {
+    min-width: 180px;
+    /* mantém largura consistente */
+}
+
+/* === Cores do link no rodapé === */
+.footer a,
+.footer a:visited {
+    color: rgba(255, 255, 255, 0.85);
+    /* branco suave */
+    text-decoration: underline dotted;
+    /* sublinhado discreto */
+}
+
+.footer a:hover,
+.footer a:focus {
+    color: #ffffff;
+    /* mais claro ao passar o mouse */
+    text-decoration: underline;
+    /* feedback de interação */
+}
+
+.footer a,
+.footer a:visited {
+    color: #000;
+}
+
+.footer a:hover,
+.footer a:focus {
+    color: #fff;
+}
+
+/* === Cores do link H3 === */
+
+h3 a {
+    color: var(--cor-primaria-escura);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+h3 a:hover {
+    color: var(--cor-secundaria-escura);
+    text-decoration: underline;
+}
+
+/* === Espaço reservado para o diagrama ER === */
+
+.er-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #f5f5f5;
+    border: 1px dashed #aaa;
+    border-radius: 10px;
+    padding: 30px;
+    margin: 20px auto;
+    width: 95%;
+    min-height: 300px;
+    text-align: center;
+}
+
+.er-imagem {
+    max-width: 90%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
