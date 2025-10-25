@@ -5,15 +5,18 @@
 **Banco:** PostgreSQL  
 **Ferramenta de modelagem:** BRModelo
 
-# ✅ Requisitos e Regras do Domínio
+## 📖 Como Executar
+Você pode acessar o projeto de duas formas:
 
-**Entidades-base:**  
-Cliente, Endereço, Produto, Estoque, Pedido, Item_Pedido, Pagamento, Remessa, Auditoria_Pedido  
+1. **Via GitHub Pages** (mais prático):  
+   👉 [Acesse aqui](https://tsb89.github.io/ecommerce-db-project/)  
+   
+2. **Localmente no navegador**:
+   * Clone o repositório ou baixe os arquivos.
+   * Abra o arquivo `index.html` no navegador.
+   * Não requer instalação de dependências.
 
-**Operações mínimas:**  
-Criar pedido/carrinho, fechar compra, faturar e gerar remessa.
-
-# 📋 Checklist de Entregas
+## 📋 Checklist de Entregas
 
 1. [x] Levantamento de **Requisitos (RF, RNF, RN)**
 2. [x] **Modelo Entidade-Relacionamento (DER)** no BRModelo
@@ -22,7 +25,7 @@ Criar pedido/carrinho, fechar compra, faturar e gerar remessa.
 5. [x] **População de Dados (DML)** — Inserts coerentes e funcionais
 6. [x] **VIEW obrigatória** + SELECT de exemplo
 
-# 📄 Licença
+## 📄 Licença
 
 Este projeto é de uso livre para fins educacionais.
 
