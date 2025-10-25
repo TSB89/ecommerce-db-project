@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelagem de Banco de Dados</title>
+    <title>Modelagem de Banco de Dados 25.2</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <div class="container">
         <header class="header">
-            <h1>📚 Modelagem de Banco de Dados</h1>
+            <h1>📚 Modelagem de Banco de Dados 25.2</h1>
             <p class="subtitle">E-commerce - Loja simples</p>
         </header>
 
@@ -36,12 +36,13 @@
             <br>
             <!-- BOTÕES LADO A LADO -->
             <div class="db-botoes">
-                <button class="toggle-btn" onclick="toggleSecao('requisitos', this)">📊 Levantamento de
-                    Requisitos</button>
-                <button class="toggle-btn" onclick="toggleSecao('modelagem', this)">🧩 Modelagem ER</button>
-                <button class="toggle-btn" onclick="toggleSecao('mapeamento', this)">🧮 Mapeamento Relacional </button>
-                <button class="toggle-btn" onclick="toggleSecao('ddl', this)">🧱 Esquema (DDL)</button>
-                <button class="toggle-btn" onclick="toggleSecao('populacao', this)">📦 População de Dados (DML)</button>
+                <button class="toggle-btn" onclick="toggleSecao('requisitos', this)">📊 Requisitos do Sistema</button>
+                <button class="toggle-btn" onclick="toggleSecao('modelagem', this)">🧩 Modelagem Conceitual</button>
+                <button class="toggle-btn" onclick="toggleSecao('mapeamento', this)">🧮 Modelagem Lógica </button>
+                <button class="toggle-btn" onclick="toggleSecao('ddl', this)">🧱 Estrutura do Banco de Dados
+                    (DDL)</button>
+                <button class="toggle-btn" onclick="toggleSecao('populacao', this)">📦 Preenchimento das Tabelas
+                    (DML)</button>
                 <button class="toggle-btn" onclick="toggleSecao('view', this)">🔍 View e SELECT</button>
             </div>
 
@@ -206,6 +207,8 @@
             </div>
 
             <div id="modelagem" class="db-conteudo">
+                <p></p>
+                <h3>2. Modelagem Entidade-Relacionamento no BRModelo</h3>
 
                 <div class="er-container">
                     <a href="imagens/modelo-er.jpg" target="_blank" title="Clique para abrir em tamanho original">
@@ -215,7 +218,8 @@
             </div>
 
             <div id="mapeamento" class="db-conteudo">
-
+                <p></p>
+                <h3>3. Transformação do Modelo E-R em Modelo Relacional </h3>
                 <section id="mapeamento-relacional">
 
                     <!-- CARD 1 -->
@@ -352,6 +356,9 @@
             </div>
 
             <div id="ddl" class="db-conteudo">
+
+                <p></p>
+                <h3>4.1 Criação do esquema DDL </h3>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
                     <code>
@@ -505,11 +512,27 @@ CREATE TABLE auditoria_pedido (
         REFERENCES pedido (id_pedido)
         ON DELETE CASCADE
 );
-             </code>
+            </code>
+                </div>
+                <p></p>
+                <h3>4.2 Criação dos índices essenciais </h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
+                    <code>
+-- Índices essenciais
+
+CREATE INDEX idx_produto_nome ON produto (nome);
+CREATE INDEX idx_pedido_status ON pedido (status);
+CREATE INDEX idx_pagamento_status ON pagamento (status);
+CREATE INDEX idx_remessa_status ON remessa (status);
+CREATE INDEX idx_cliente_email ON cliente (email);
+            </code>
                 </div>
             </div>
 
             <div id="populacao" class="db-conteudo">
+                <p></p>
+                <h3>5. Inserir os dados nas tabelas (DML) </h3>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
                     <code>
@@ -604,6 +627,8 @@ VALUES
             </div>
 
             <div id="view" class="db-conteudo">
+                <p></p>
+                <h3>6.1 Criação de uma VIEW para simplificar consultas complexas e ocultar dados sensíveis</h3>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
                     <code>
@@ -628,6 +653,8 @@ LEFT JOIN remessa r ON p.id_pedido = r.id_pedido;
 
                 </div>
 
+                <p></p>
+                <h3>6.2 Três exemplos de SELECT para testar a VIEW </h3>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copiarCodigo(this)">📋 Copiar</button>
                     <code>
@@ -666,7 +693,7 @@ WHERE status_pagamento = 'pendente';
         </section>
 
         <footer class="footer">
-            <p>Modelagem de Banco de Dados - <a href="https://github.com/TSB89/ecommerce-db-project"
+            <p>Modelagem de Banco de Dados 25.2 - <a href="https://github.com/TSB89/ecommerce-db-project"
                     target="_blank">Repositório da página no GitHub.</a></p>
         </footer>
     </div>
