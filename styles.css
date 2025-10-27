@@ -110,7 +110,7 @@ body {
     background: linear-gradient(135deg, #707070 0%, #3d3d3d 100%);
 }
 
-/* Botão ativo com cor de destaque */
+/* === BOTÃO ATIVO COM COR DE DESTAQUE === */
 .toggle-btn.ativo {
     background: linear-gradient(135deg, #666 0%, #000 100%);
     border-color: #000;
@@ -188,20 +188,20 @@ body {
     vertical-align: middle;
 }
 
-/* Cabeçalho da tabela */
+/* === CABEÇALHO DA TABELA === */
 .db-table th {
     background-color: var(--cor-secundaria-clara);
     color: #333;
     font-weight: bold;
 }
 
-/* Linhas alternadas */
+/* === LINHAS ALTERNADAS === */
 .db-table tr:nth-child(even) {
     background: var(--cor-primaria-clara);
     color: #222;
 }
 
-/* Efeito hover */
+/* === EFEITO HOVER === */
 .db-table tr:hover {
     background: var(--cor-secundaria-clara);
     color: black;
@@ -274,7 +274,7 @@ body {
 .footer a,
 .footer a:visited {
     color: rgba(255, 255, 255, 0.85);
-    text-decoration: underline dotted;
+    text-decoration: underline;
 }
 
 .footer a:hover,
